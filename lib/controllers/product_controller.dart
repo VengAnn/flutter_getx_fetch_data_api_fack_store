@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:flutter/material.dart';
 import 'package:get_x_fetch_facke_api/services/api_helper.dart';
 import 'package:get/get.dart';
 import 'package:get_x_fetch_facke_api/models/product_res_model.dart';
@@ -14,7 +16,7 @@ class ProductController extends GetxController {
   @override
   void onInit() {
     fetchAllProduct();
-    getCategoryName();
+    getCategory();
     super.onInit();
   }
 
@@ -39,24 +41,25 @@ class ProductController extends GetxController {
     update();
   }
 
-  //create method get categoryName
-  final List<String> _categoryListName = [];
-  List<String> get categoryNameList => _categoryListName;
-  int selectedIndex = 0;
-  void toggle(int index) {
-    selectedIndex = index;
-    update();
-  }
+  //create method get category
+  final List<String> _categoryList = [];
+  List<String> get categoryList => _categoryList;
+  // int selectedIndex = 0;
+  // //method for toggle selected onlistviewbuilder
+  // void toggle(int index) {
+  //   selectedIndex = index;
+  //   update();
+  // }
 
   //
-  void getCategoryName() async {
+  void getCategory() async {
     try {
       isLoading = true;
       final result = await helper.getProductCategory();
       // ignore: unnecessary_null_comparison
       if (result != null) {
-        _categoryListName.clear();
-        _categoryListName.addAll(result);
+        _categoryList.clear();
+        _categoryList.addAll(result);
       } else {
         print("something wrong get category Name");
       }
@@ -66,5 +69,27 @@ class ProductController extends GetxController {
       isLoading = false;
     }
     update();
+  }
+
+  ///Create method get categoryName
+  final List<ProductResModel> _categoryItem = [];
+  List<ProductResModel> get categoryItemList => _categoryItem;
+  void getCategoryName(String category) async {
+    try {
+      isLoading = true;
+      final result = await helper.getProductCategoryName(category);
+      print(result);
+      // ignore: unnecessary_null_comparison
+      if (result != null) {
+        _categoryItem.clear();
+        _categoryItem.addAll(result);
+      } else {
+        print("Somthing wrong or data Empty");
+      }
+    } catch (e) {
+      throw Exception("Erro get CategoryName: $e");
+    } finally {
+      isLoading = false;
+    }
   }
 }

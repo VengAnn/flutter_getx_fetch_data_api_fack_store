@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -22,33 +23,48 @@ class HomeScreenProduct extends StatelessWidget {
                 return ListView.builder(
                   // physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  itemCount: productController.categoryNameList.length,
+                  itemCount: productController.categoryList.length,
                   itemBuilder: (context, index) {
+                    String category = productController.categoryList[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
                       child: ZoomTapAnimation(
-                        onTap: () {
-                          productController.toggle(index);
-                        },
-                        child: Container(
-                          width: 130,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.0),
-                            color: productController.selectedIndex == index
-                                ? Colors.red
-                                : Colors.grey[500],
-                          ),
-                          child: Center(
-                            child: Text(
-                              // ignore: unnecessary_string_interpolations
-                              "${productController.categoryNameList[index]}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                          onTap: () {
+                            //productController.toggle(index);
+                            // productController.getCategoryName(category);
+                            //print("${productController.getCategoryName(category)}");
+                          },
+                          child: InkWell(
+                            onTap: () {
+                              productController.getCategoryName(category);
+                            },
+                            splashColor: Colors.amber,
+                            splashFactory: InkSparkle.splashFactory,
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              width: 130,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Colors.grey,
+                              ),
+                              child: Center(
+                                child: Text(
+                                    // ignore: unnecessary_string_interpolations
+                                    "${productController.categoryList[index]}"),
                               ),
                             ),
+                          )
+
+                          // child: Center(
+                          //   child: Text(
+                          //     // ignore: unnecessary_string_interpolations
+                          //     "${productController.categoryNameList[index]}",
+                          //     style: const TextStyle(
+                          //       fontWeight: FontWeight.bold,
+                          //     ),
+                          //   ),
+                          //),
                           ),
-                        ),
-                      ),
                     );
                   },
                 );
