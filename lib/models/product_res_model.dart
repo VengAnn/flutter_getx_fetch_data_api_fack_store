@@ -1,7 +1,7 @@
 class ProductResModel {
   final int id;
   final String title;
-  final double price;
+  final dynamic price;
   final String description;
   final String category;
   final String image;
@@ -23,7 +23,7 @@ class ProductResModel {
     return ProductResModel(
       id: json['id'],
       title: json['title'],
-      price: json['price'].toDouble(),
+      price: json['price'],
       description: json['description'],
       category: json['category'],
       image: json['image'],

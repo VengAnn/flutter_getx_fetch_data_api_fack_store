@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_x_fetch_facke_api/widgets/grid_view_category_widget.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../controllers/product_controller.dart';
 import '../../widgets/grid_view_widget.dart';
@@ -20,54 +20,87 @@ class HomeScreenProduct extends StatelessWidget {
             child: GetBuilder(
               init: productController,
               builder: (controller) {
-                return ListView.builder(
-                  // physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: productController.categoryList.length,
-                  itemBuilder: (context, index) {
-                    String category = productController.categoryList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: ZoomTapAnimation(
-                          onTap: () {
-                            //productController.toggle(index);
-                            // productController.getCategoryName(category);
-                            //print("${productController.getCategoryName(category)}");
-                          },
-                          child: InkWell(
-                            onTap: () {
-                              productController.getCategoryName(category);
-                            },
-                            splashColor: Colors.amber,
-                            splashFactory: InkSparkle.splashFactory,
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              width: 130,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colors.grey,
-                              ),
-                              child: Center(
-                                child: Text(
-                                    // ignore: unnecessary_string_interpolations
-                                    "${productController.categoryList[index]}"),
-                              ),
-                            ),
-                          )
+                return productController.isLoading
+                    ? Container()
+                    : ListView.builder(
+                        // physics: const NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: productController.categoryList.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            return GetBuilder<ProductController>(
+                              builder: (_) {
+                                return ZoomTapAnimation(
+                                  onTap: () {},
+                                  child: InkWell(
+                                    splashColor: Colors.amber,
+                                    onTap: () {
+                                      productController.toggle();
+                                      GridView_Widget(
+                                          productController: productController);
+                                    },
+                                    child: Container(
+                                      width: 130,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                        color: Colors.grey,
+                                      ),
+                                      child: const Center(
+                                          child: Text("All Products")),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            String category =
+                                productController.categoryList[index - 1];
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: ZoomTapAnimation(
+                                onTap: () {
+                                  //productController.toggle(index);
+                                  // productController.getCategoryName(category);
+                                  //print("${productController.getCategoryName(category)}");
+                                },
+                                child: InkWell(
+                                  onTap: () {
+                                    productController.getCategoryName(category);
+                                    productController.isClick = true;
+                                  },
+                                  splashColor: Colors.amber,
+                                  splashFactory: InkSparkle.splashFactory,
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      color: Colors.grey,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                          // ignore: unnecessary_string_interpolations
+                                          "${productController.categoryList[index - 1]}"),
+                                    ),
+                                  ),
+                                ),
 
-                          // child: Center(
-                          //   child: Text(
-                          //     // ignore: unnecessary_string_interpolations
-                          //     "${productController.categoryNameList[index]}",
-                          //     style: const TextStyle(
-                          //       fontWeight: FontWeight.bold,
-                          //     ),
-                          //   ),
-                          //),
-                          ),
-                    );
-                  },
-                );
+                                // child: Center(
+                                //   child: Text(
+                                //     // ignore: unnecessary_string_interpolations
+                                //     "${productController.categoryNameList[index]}",
+                                //     style: const TextStyle(
+                                //       fontWeight: FontWeight.bold,
+                                //     ),
+                                //   ),
+                                //),
+                              ),
+                            );
+                          }
+                        },
+                      );
               },
             ),
           ),
@@ -113,7 +146,12 @@ class HomeScreenProduct extends StatelessWidget {
                             ],
                           ),
                         ),
-                        GridView_Widget(productController: productController),
+
+                        productController.isClick
+                            ? GridView_Categroy(
+                                productController: productController)
+                            : GridView_Widget(
+                                productController: productController),
                       ],
                     ),
                   );

@@ -74,11 +74,15 @@ class ProductScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _botttomAppBarItem(
-                context,
-                icon: IconlyLight.home,
-                page: 0,
-                lable: "Home",
+              GetBuilder<ProductController>(
+                builder: (_) {
+                  return _botttomAppBarItem(
+                    context,
+                    icon: IconlyLight.home,
+                    page: 0,
+                    lable: "Home",
+                  );
+                },
               ),
               //
               _botttomAppBarItem(
@@ -116,6 +120,8 @@ class ProductScreen extends StatelessWidget {
         return ZoomTapAnimation(
           onTap: () {
             controllerBottomNav.goToTap(page);
+            //tap on home show all product
+            if (page == 0) productController.isClick = false;
           },
           child: Container(
             color: Colors.transparent,

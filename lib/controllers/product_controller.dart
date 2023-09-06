@@ -74,6 +74,12 @@ class ProductController extends GetxController {
   ///Create method get categoryName
   final List<ProductResModel> _categoryItem = [];
   List<ProductResModel> get categoryItemList => _categoryItem;
+  var isClick = false;
+  void toggle() {
+    isClick = !isClick;
+    update();
+  }
+
   void getCategoryName(String category) async {
     try {
       isLoading = true;
@@ -86,6 +92,7 @@ class ProductController extends GetxController {
       } else {
         print("Somthing wrong or data Empty");
       }
+      update();
     } catch (e) {
       throw Exception("Erro get CategoryName: $e");
     } finally {
