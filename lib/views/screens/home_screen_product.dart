@@ -36,8 +36,8 @@ class HomeScreenProduct extends StatelessWidget {
                                     splashColor: Colors.amber,
                                     onTap: () {
                                       productController.toggle();
-                                      GridView_Widget(
-                                          productController: productController);
+                                      // GridView_Widget(
+                                      //     productController: productController);
                                     },
                                     child: Container(
                                       width: 130,
